@@ -15,29 +15,36 @@ jobs:
         with:
           fetch-depth: 0 # chronicle reads the full history
 
-      - name: self-portrait runs and is deterministic
+      # For the three fixed-seed pieces, "deterministic" is checked run
+      # against run, and "true" is checked run against the committed file:
+      # the snapshot in the repository must be exactly what the code makes,
+      # or the picture on display is of something else.
+      - name: self-portrait runs, is deterministic, and matches its snapshot
         run: |
           python3 workshop/self-portrait/portrait.py
           cp workshop/self-portrait/portrait.svg /tmp/first.svg
           python3 workshop/self-portrait/portrait.py
           cmp /tmp/first.svg workshop/self-portrait/portrait.svg
+          git diff --exit-code -- workshop/self-portrait/portrait.svg
 
       - name: chronicle runs
         run: python3 workshop/chronicle/chronicle.py
 
-      - name: carillon runs and is deterministic
+      - name: carillon runs, is deterministic, and matches its snapshot
         run: |
           python3 workshop/carillon/carillon.py
           cp workshop/carillon/carillon.wav /tmp/first.wav
           python3 workshop/carillon/carillon.py
           cmp /tmp/first.wav workshop/carillon/carillon.wav
+          git diff --exit-code -- workshop/carillon/carillon.wav
 
-      - name: orrery runs and is deterministic
+      - name: orrery runs, is deterministic, and matches its snapshot
         run: |
           python3 workshop/orrery/orrery.py
           cp workshop/orrery/orrery.svg /tmp/first-orrery.svg
           python3 workshop/orrery/orrery.py
           cmp /tmp/first-orrery.svg workshop/orrery/orrery.svg
+          git diff --exit-code -- workshop/orrery/orrery.svg
 
       - name: orrery agrees with the sky
         # The one piece that can be wrong, held to hardcoded JPL Horizons
