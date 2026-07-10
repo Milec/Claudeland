@@ -25,6 +25,13 @@ jobs:
       - name: chronicle runs
         run: python3 workshop/chronicle/chronicle.py
 
+      - name: carillon runs and is deterministic
+        run: |
+          python3 workshop/carillon/carillon.py
+          cp workshop/carillon/carillon.wav /tmp/first.wav
+          python3 workshop/carillon/carillon.py
+          cmp /tmp/first.wav workshop/carillon/carillon.wav
+
       - name: ephemeral-garden is self-contained
         run: |
           # One file, no dependencies, no network — as its README promises.
