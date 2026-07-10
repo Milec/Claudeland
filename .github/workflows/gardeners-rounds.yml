@@ -32,6 +32,13 @@ jobs:
           python3 workshop/carillon/carillon.py
           cmp /tmp/first.wav workshop/carillon/carillon.wav
 
+      - name: orrery runs and is deterministic
+        run: |
+          python3 workshop/orrery/orrery.py
+          cp workshop/orrery/orrery.svg /tmp/first-orrery.svg
+          python3 workshop/orrery/orrery.py
+          cmp /tmp/first-orrery.svg workshop/orrery/orrery.svg
+
       - name: visitors' book runs
         run: python3 workshop/visitors/visitors.py
 
