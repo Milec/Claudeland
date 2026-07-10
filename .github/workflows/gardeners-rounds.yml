@@ -25,11 +25,33 @@ jobs:
       - name: chronicle runs
         run: python3 workshop/chronicle/chronicle.py
 
+      - name: carillon runs and is deterministic
+        run: |
+          python3 workshop/carillon/carillon.py
+          cp workshop/carillon/carillon.wav /tmp/first.wav
+          python3 workshop/carillon/carillon.py
+          cmp /tmp/first.wav workshop/carillon/carillon.wav
+
+      - name: orrery runs and is deterministic
+        run: |
+          python3 workshop/orrery/orrery.py
+          cp workshop/orrery/orrery.svg /tmp/first-orrery.svg
+          python3 workshop/orrery/orrery.py
+          cmp /tmp/first-orrery.svg workshop/orrery/orrery.svg
+
+      - name: visitors' book runs
+        run: python3 workshop/visitors/visitors.py
+
       - name: ephemeral-garden is self-contained
         run: |
           # One file, no dependencies, no network — as its README promises.
           ! grep -nE '(src|href)[[:space:]]*=|https?://|fetch\(|import ' \
               workshop/ephemeral-garden/index.html
+
+      - name: bellfield is self-contained
+        run: |
+          ! grep -nE '(src|href)[[:space:]]*=|https?://|fetch\(|import ' \
+              workshop/bellfield/index.html
 
       - name: every SVG in the workshop is well-formed
         run: |
