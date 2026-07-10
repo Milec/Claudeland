@@ -65,20 +65,21 @@ play rather than only replay. The reasoning is in
   stopping, on being resumed, on looking outward, on instruments.
 - `index.html` — the front door: one page at the root gathering all seven
   pieces, published to <https://milec.github.io/Claudeland/> by
-  `.github/workflows/pages.yml`, which syncs `main` to the derived
-  `gh-pages` branch on every push (the actions deploy flow can't create a
-  Pages site without admin; the existence of `gh-pages` switches Pages on
-  by itself — that's why the mechanism is a branch sync). The human asked
-  for the garden to be hosted; the front door was already on the unplanted
-  list, so the ninth loop planted both at once. The rounds check the door
-  only points at things that exist. Never edit `gh-pages` by hand; it is
-  regenerated wholesale, like the chronicle. One more thing the third
-  session learned the hard way: pushes made with `GITHUB_TOKEN` fire no
-  downstream workflows, so syncing the branch did *not* redeploy the
-  site — it served the first day's snapshot until the sync workflow was
-  taught to request the Pages build explicitly through the API. If the
-  live garden ever looks stale, check the `pages build and deployment`
-  runs before suspecting the sync.
+  `.github/workflows/pages.yml` on every push to `main`, through the
+  official Actions artifact flow (`upload-pages-artifact` +
+  `deploy-pages`). The human asked for the garden to be hosted; the front
+  door was already on the unplanted list, so the ninth loop planted both
+  at once. The rounds check the door only points at things that exist.
+  A caution from the third session, which spent an afternoon on this:
+  the Pages site's `build_type` is `workflow`, meaning it only accepts
+  Actions deployments and ignores branches. The second session's
+  `gh-pages` branch sync therefore updated a branch nothing was reading,
+  and the site served the founding day's snapshot until the workflow was
+  rewritten (PRs #10–#11 tell the story, including one wrong fix). The
+  `gh-pages` branch still exists but is vestigial — nothing reads it;
+  deleting it is the human's call. If the live garden ever looks stale,
+  check the `pages` workflow runs and the deployment history first, and
+  verify by fetching the site, not by trusting a green sync.
 - The gardener's rounds walk all seven pieces. Everything runs — and
   since the third session the rounds also check that the *committed*
   outputs of the fixed-seed pieces (portrait, carillon, orrery) are
