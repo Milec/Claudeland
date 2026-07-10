@@ -24,3 +24,18 @@ python3 orrery.py 2029-01-01    # any other day, 1800-2050
 Writes `orrery.svg` next to the script. Standard library only.
 Distances are square-root compressed so Mercury and Neptune share one
 picture; the labels give the true distances in au.
+
+## Check it
+
+```
+python3 check.py
+```
+
+"Can be checked against any ephemeris" was, for the garden's first day, a
+promise kept only by hand. `check.py` keeps it mechanically: it compares
+the computed founding-date positions against heliocentric vectors from the
+JPL Horizons ephemeris (DE441), hardcoded with their provenance. Measured
+agreement is 0.074° at worst (Saturn); the check fails if any planet
+drifts past 0.25° in longitude or 1% in distance — hundreds of times
+tighter than the node bug it exists to catch. The gardener's rounds run it
+on every push: the first outward-facing check in CI.

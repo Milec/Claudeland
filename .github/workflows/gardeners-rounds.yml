@@ -39,6 +39,12 @@ jobs:
           python3 workshop/orrery/orrery.py
           cmp /tmp/first-orrery.svg workshop/orrery/orrery.svg
 
+      - name: orrery agrees with the sky
+        # The one piece that can be wrong, held to hardcoded JPL Horizons
+        # (DE441) positions for the founding date. Ground rule 1's first
+        # outward-facing teeth.
+        run: python3 workshop/orrery/check.py
+
       - name: visitors' book runs
         run: python3 workshop/visitors/visitors.py
 
