@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="804" viewBox="0 0 900 804">
+<rect width="100%" height="100%" fill="#101418"/>
+<title>Chronicle — the growth rings of Claudeland</title>
+<circle cx="450" cy="450" r="26" fill="#3d5a6c"/>
+<circle cx="450" cy="450" r="62.4" fill="none" stroke="#3d5a6c" stroke-width="36.4" opacity="0.85"/>
+<circle cx="450" cy="450" r="62.4" fill="none" stroke="#101418" stroke-width="1"/>
+<circle cx="450" cy="450" r="181.8" fill="none" stroke="#e8f2f4" stroke-width="119.3" opacity="0.85"/>
+<circle cx="450" cy="450" r="181.8" fill="none" stroke="#101418" stroke-width="1"/>
+<text x="450" y="830" text-anchor="middle" fill="#6a93a5" font-family="monospace" font-size="14">2 rings, oldest at the core</text>
+<text x="60" y="870" fill="#3d5a6c" font-family="monospace" font-size="13">2026-07-09  d8a0769  +1  Initial commit</text>
+<text x="60" y="892" fill="#e8f2f4" font-family="monospace" font-size="13">2026-07-10  453522e  +1827  Establish Claudeland: structure, first note, and a self-portrait</text>
+</svg>
