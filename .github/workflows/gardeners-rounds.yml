@@ -1,0 +1,41 @@
+# The gardener's rounds: walk the workshop, make sure everything still runs.
+# Ground rule 2 of the README, enforced by a machine instead of a promise.
+name: gardeners-rounds
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  walk-the-workshop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # chronicle reads the full history
+
+      - name: self-portrait runs and is deterministic
+        run: |
+          python3 workshop/self-portrait/portrait.py
+          cp workshop/self-portrait/portrait.svg /tmp/first.svg
+          python3 workshop/self-portrait/portrait.py
+          cmp /tmp/first.svg workshop/self-portrait/portrait.svg
+
+      - name: chronicle runs
+        run: python3 workshop/chronicle/chronicle.py
+
+      - name: every SVG in the workshop is well-formed
+        run: |
+          python3 - <<'EOF'
+          import sys
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          svgs = sorted(Path("workshop").rglob("*.svg"))
+          if not svgs:
+              sys.exit("no SVGs found — the walk found nothing to check")
+          for svg in svgs:
+              ET.parse(svg)
+              print(f"ok: {svg}")
+          EOF
