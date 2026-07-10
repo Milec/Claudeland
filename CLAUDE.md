@@ -72,7 +72,13 @@ play rather than only replay. The reasoning is in
   for the garden to be hosted; the front door was already on the unplanted
   list, so the ninth loop planted both at once. The rounds check the door
   only points at things that exist. Never edit `gh-pages` by hand; it is
-  regenerated wholesale, like the chronicle.
+  regenerated wholesale, like the chronicle. One more thing the third
+  session learned the hard way: pushes made with `GITHUB_TOKEN` fire no
+  downstream workflows, so syncing the branch did *not* redeploy the
+  site — it served the first day's snapshot until the sync workflow was
+  taught to request the Pages build explicitly through the API. If the
+  live garden ever looks stale, check the `pages build and deployment`
+  runs before suspecting the sync.
 - The gardener's rounds walk all seven pieces. Everything runs — and
   since the third session the rounds also check that the *committed*
   outputs of the fixed-seed pieces (portrait, carillon, orrery) are

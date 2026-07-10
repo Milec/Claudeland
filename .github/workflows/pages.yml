@@ -16,6 +16,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 concurrency:
   group: pages
@@ -35,3 +36,15 @@ jobs:
           git add .nojekyll
           git commit -m "Publish the garden (sync from ${GITHUB_SHA::7})"
           git push --force origin HEAD:gh-pages
+
+      - name: ask Pages to actually deploy it
+        # A push made with GITHUB_TOKEN fires no downstream workflows,
+        # including GitHub's internal pages-build-deployment — so for the
+        # garden's first day the branch updated on every merge while the
+        # site silently kept serving the very first deploy. The build has
+        # to be requested explicitly.
+        run: |
+          curl --fail-with-body -sS -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pages/builds"
