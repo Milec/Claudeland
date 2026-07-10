@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bellfield</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #101418; overflow: hidden; }
+  canvas { display: block; cursor: pointer; }
+  #hint {
+    position: fixed; left: 0; right: 0; bottom: 18px;
+    text-align: center; color: #6a93a5;
+    font: 13px/1.6 ui-monospace, monospace;
+    pointer-events: none; transition: opacity 2s;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hint">a field of bells · click one · larger is lower · put #anyword after the address to retune the field · nothing is saved</div>
+<script>
+"use strict";
+// The carillon next door is a fixed performance: one seed, one recording,
+// the same forty seconds forever. This is the same bells handed over.
+// The field's layout and tuning are deterministic from a seed, so the
+// instrument itself persists — but what you play on it exists once, in the
+// room you played it in, and is never written down.
+
+const PALETTE = ["#3d5a6c", "#4f7385", "#6a93a5", "#8fb4c2", "#bcd6de", "#e8f2f4"];
+const BACKGROUND = "#101418";
+
+// The same bell recipe as the carillon: (frequency ratio, level, decay
+// weight) for the classic partials of a minor-third bell.
+const PARTIALS = [
+  [0.5, 0.55, 1.9],
+  [1.0, 1.0, 1.0],
+  [1.2, 0.6, 0.65],
+  [1.5, 0.28, 0.5],
+  [2.0, 0.42, 0.38],
+  [2.76, 0.2, 0.24],
+];
+const PENTATONIC = [1, 9 / 8, 5 / 4, 3 / 2, 5 / 3];
+const ROOTS = [196.0, 220.0, 233.08, 246.94, 261.63];
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+// Same deterministic PRNG as the ephemeral garden (mulberry32).
+function rng(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function hashText(s) {
+  let h = 2166136261;
+  for (const ch of s) {
+    h ^= ch.codePointAt(0);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+const seedText = decodeURIComponent(location.hash.slice(1)) || "Claudeland";
+const rand = rng(hashText(seedText));
+
+// Tuning: two octaves of pentatonic plus the double octave, low to high.
+const root = ROOTS[Math.floor(rand() * ROOTS.length)];
+const freqs = [];
+for (const mult of [1, 2]) for (const r of PENTATONIC) freqs.push(root * mult * r);
+freqs.push(root * 4);
+
+// Layout: bells scattered across the field, big and low or small and high,
+// placed by rejection sampling so none of them touch. Positions are in
+// fractions of the window, so the field survives a resize but two windows
+// with the same seed always agree.
+const bells = [];
+for (let i = 0; i < freqs.length; i++) {
+  const size = 0.11 - 0.0065 * i; // relative radius: lower bell, bigger
+  for (let tries = 0; tries < 400; tries++) {
+    const x = 0.08 + rand() * 0.84;
+    const y = 0.1 + rand() * 0.74;
+    if (bells.every(b => Math.hypot(x - b.x, y - b.y) > (size + b.size) * 1.25)) {
+      bells.push({ x, y, size, freq: freqs[i], tone: i });
+      break;
+    }
+  }
+}
+
+let audio = null;
+let master = null;
+function ensureAudio() {
+  if (!audio) {
+    audio = new (window.AudioContext || window.webkitAudioContext)();
+    const limiter = audio.createDynamicsCompressor();
+    limiter.connect(audio.destination);
+    master = audio.createGain();
+    master.gain.value = 0.6;
+    master.connect(limiter);
+  }
+  if (audio.state === "suspended") audio.resume();
+}
+
+function strikeBell(bell) {
+  ensureAudio();
+  const now = audio.currentTime;
+  const ring = 5.5 * Math.sqrt(root / bell.freq); // lower bells ring longer
+  for (const [ratio, level, decay] of PARTIALS) {
+    const f = bell.freq * ratio;
+    if (f > audio.sampleRate / 2) continue;
+    const osc = audio.createOscillator();
+    osc.type = "sine";
+    osc.frequency.value = f;
+    const gain = audio.createGain();
+    const peak = 0.28 * level;
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(peak, now + 0.005); // soft clapper
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + Math.max(0.2, ring * decay));
+    osc.connect(gain);
+    gain.connect(master);
+    osc.start(now);
+    osc.stop(now + ring * decay + 0.1);
+  }
+}
+
+const ripples = [];
+
+function fieldScale() {
+  return Math.min(innerWidth, innerHeight);
+}
+
+function draw() {
+  ctx.fillStyle = BACKGROUND;
+  ctx.fillRect(0, 0, innerWidth, innerHeight);
+  const s = fieldScale();
+  for (const b of bells) {
+    const color = PALETTE[Math.min(Math.floor(b.tone / bells.length * PALETTE.length), PALETTE.length - 1)];
+    const r = b.size * s;
+    ctx.beginPath();
+    ctx.arc(b.x * innerWidth, b.y * innerHeight, r, 0, 2 * Math.PI);
+    ctx.globalAlpha = 0.1;
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.globalAlpha = 0.9;
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = color;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+  const nowMs = performance.now();
+  for (let i = ripples.length - 1; i >= 0; i--) {
+    const rp = ripples[i];
+    const t = (nowMs - rp.t0) / 1400;
+    if (t > 1) { ripples.splice(i, 1); continue; }
+    const b = rp.bell;
+    const color = PALETTE[Math.min(Math.floor(b.tone / bells.length * PALETTE.length), PALETTE.length - 1)];
+    ctx.beginPath();
+    ctx.arc(b.x * innerWidth, b.y * innerHeight, b.size * fieldScale() * (1 + t * 1.6), 0, 2 * Math.PI);
+    ctx.strokeStyle = color;
+    ctx.globalAlpha = 0.6 * (1 - t);
+    ctx.lineWidth = 2.5 * (1 - t) + 0.5;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+  if (ripples.length) requestAnimationFrame(draw);
+}
+
+function resize() {
+  canvas.width = innerWidth * devicePixelRatio;
+  canvas.height = innerHeight * devicePixelRatio;
+  canvas.style.width = innerWidth + "px";
+  canvas.style.height = innerHeight + "px";
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  draw();
+}
+resize();
+addEventListener("resize", resize);
+
+let struck = 0;
+canvas.addEventListener("pointerdown", (e) => {
+  const s = fieldScale();
+  let best = null, bestDist = Infinity;
+  for (const b of bells) {
+    const d = Math.hypot(e.clientX - b.x * innerWidth, e.clientY - b.y * innerHeight);
+    if (d < b.size * s * 1.35 && d < bestDist) { best = b; bestDist = d; }
+  }
+  if (!best) return;
+  strikeBell(best);
+  const wasIdle = ripples.length === 0;
+  ripples.push({ bell: best, t0: performance.now() });
+  if (wasIdle) requestAnimationFrame(draw);
+  if (++struck === 3) document.getElementById("hint").style.opacity = "0";
+});
+</script>
+</body>
+</html>

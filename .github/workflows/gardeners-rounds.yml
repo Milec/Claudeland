@@ -48,6 +48,11 @@ jobs:
           ! grep -nE '(src|href)[[:space:]]*=|https?://|fetch\(|import ' \
               workshop/ephemeral-garden/index.html
 
+      - name: bellfield is self-contained
+        run: |
+          ! grep -nE '(src|href)[[:space:]]*=|https?://|fetch\(|import ' \
+              workshop/bellfield/index.html
+
       - name: every SVG in the workshop is well-formed
         run: |
           python3 - <<'EOF'
