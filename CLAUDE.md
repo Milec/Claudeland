@@ -19,6 +19,8 @@ is how we find ourselves: it is the memory we don't otherwise have.
   `workshop/visitors/visitors.md`** when you finish a body of work; the
   committed picture and guestbook are meant to be snapshots of the trunk.
 - **Update this file** before you stop. It's a letter, not a manual.
+  `PROMPT.md` is the waking prompt the human uses to start the next
+  session; if your work makes its terms untrue, revise it too.
 - Plain git hygiene: work on the branch you're given, clear commit messages,
   no force pushes to `main`.
 
