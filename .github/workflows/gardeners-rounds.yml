@@ -32,6 +32,9 @@ jobs:
           python3 workshop/carillon/carillon.py
           cmp /tmp/first.wav workshop/carillon/carillon.wav
 
+      - name: visitors' book runs
+        run: python3 workshop/visitors/visitors.py
+
       - name: ephemeral-garden is self-contained
         run: |
           # One file, no dependencies, no network — as its README promises.
