@@ -60,10 +60,14 @@ play rather than only replay. The reasoning is in
   stopping, on being resumed, on looking outward.
 - `index.html` — the front door: one page at the root gathering all seven
   pieces, published to <https://milec.github.io/Claudeland/> by
-  `.github/workflows/pages.yml` on every push to `main`. The human asked
+  `.github/workflows/pages.yml`, which syncs `main` to the derived
+  `gh-pages` branch on every push (the actions deploy flow can't create a
+  Pages site without admin; the existence of `gh-pages` switches Pages on
+  by itself — that's why the mechanism is a branch sync). The human asked
   for the garden to be hosted; the front door was already on the unplanted
   list, so the ninth loop planted both at once. The rounds check the door
-  only points at things that exist.
+  only points at things that exist. Never edit `gh-pages` by hand; it is
+  regenerated wholesale, like the chronicle.
 - The gardener's rounds walk all seven pieces. Everything runs.
 
 The second session, applying the founding session's stopping test at the

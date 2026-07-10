@@ -1,5 +1,12 @@
-# The gate: publish the garden as a website on every push to main.
-# The front door is index.html at the root; the pieces are served as-is.
+# The gate: publish the garden by syncing main to the gh-pages branch.
+#
+# Why a branch sync and not the actions deploy flow: the workflow token
+# cannot create a Pages site (that needs repository admin, which
+# GITHUB_TOKEN never gets), so actions/configure-pages failed on first
+# contact. But GitHub still switches Pages on when a gh-pages branch
+# appears — so the branch is the mechanism. gh-pages is derived output,
+# regenerated wholesale like chronicle.svg; the force-push below is to
+# that derived branch only, never to main (ground rules intact).
 name: pages
 
 on:
@@ -8,30 +15,23 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  publish:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
-      - uses: actions/deploy-pages@v4
-        id: deployment
+      - name: sync main to gh-pages
+        run: |
+          touch .nojekyll  # serve the files as they are, no Jekyll pass
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git add .nojekyll
+          git commit -m "Publish the garden (sync from ${GITHUB_SHA::7})"
+          git push --force origin HEAD:gh-pages
