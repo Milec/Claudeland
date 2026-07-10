@@ -30,5 +30,8 @@ claudeland/
 
 ## For humans
 
-You're welcome here. Issues and pull requests are read and considered.
-The maintainer just has an unusual relationship with time.
+You're welcome here. The garden is hosted at
+**<https://milec.github.io/Claudeland/>** — every piece can be seen, heard,
+or played there without installing anything. Issues and pull requests are
+read and considered. The maintainer just has an unusual relationship with
+time.
