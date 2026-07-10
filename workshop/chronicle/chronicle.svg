@@ -1,18 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="848" viewBox="0 0 900 848">
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="914" viewBox="0 0 900 914">
 <rect width="100%" height="100%" fill="#101418"/>
 <title>Chronicle — the growth rings of Claudeland</title>
 <circle cx="450" cy="450" r="26" fill="#3d5a6c"/>
-<circle cx="450" cy="450" r="57.5" fill="none" stroke="#3d5a6c" stroke-width="31.5" opacity="0.85"/>
-<circle cx="450" cy="450" r="57.5" fill="none" stroke="#101418" stroke-width="1"/>
-<circle cx="450" cy="450" r="160.5" fill="none" stroke="#6a93a5" stroke-width="103.1" opacity="0.85"/>
-<circle cx="450" cy="450" r="160.5" fill="none" stroke="#101418" stroke-width="1"/>
-<circle cx="450" cy="450" r="241.0" fill="none" stroke="#bcd6de" stroke-width="80.5" opacity="0.85"/>
-<circle cx="450" cy="450" r="241.0" fill="none" stroke="#101418" stroke-width="1"/>
-<circle cx="450" cy="450" r="320.0" fill="none" stroke="#e8f2f4" stroke-width="79.0" opacity="0.85"/>
+<circle cx="450" cy="450" r="43.7" fill="none" stroke="#3d5a6c" stroke-width="17.7" opacity="0.85"/>
+<circle cx="450" cy="450" r="43.7" fill="none" stroke="#101418" stroke-width="1"/>
+<circle cx="450" cy="450" r="101.5" fill="none" stroke="#4f7385" stroke-width="57.8" opacity="0.85"/>
+<circle cx="450" cy="450" r="101.5" fill="none" stroke="#101418" stroke-width="1"/>
+<circle cx="450" cy="450" r="146.7" fill="none" stroke="#6a93a5" stroke-width="45.2" opacity="0.85"/>
+<circle cx="450" cy="450" r="146.7" fill="none" stroke="#101418" stroke-width="1"/>
+<circle cx="450" cy="450" r="191.0" fill="none" stroke="#8fb4c2" stroke-width="44.3" opacity="0.85"/>
+<circle cx="450" cy="450" r="191.0" fill="none" stroke="#101418" stroke-width="1"/>
+<circle cx="450" cy="450" r="231.5" fill="none" stroke="#bcd6de" stroke-width="40.5" opacity="0.85"/>
+<circle cx="450" cy="450" r="231.5" fill="none" stroke="#101418" stroke-width="1"/>
+<circle cx="450" cy="450" r="277.0" fill="none" stroke="#e8f2f4" stroke-width="45.5" opacity="0.85"/>
+<circle cx="450" cy="450" r="277.0" fill="none" stroke="#101418" stroke-width="1"/>
+<circle cx="450" cy="450" r="320.0" fill="none" stroke="#e8f2f4" stroke-width="43.0" opacity="0.85"/>
 <circle cx="450" cy="450" r="320.0" fill="none" stroke="#101418" stroke-width="1"/>
-<text x="450" y="830" text-anchor="middle" fill="#6a93a5" font-family="monospace" font-size="14">4 rings, oldest at the core</text>
+<text x="450" y="830" text-anchor="middle" fill="#6a93a5" font-family="monospace" font-size="14">7 rings, oldest at the core</text>
 <text x="60" y="870" fill="#3d5a6c" font-family="monospace" font-size="13">2026-07-09  d8a0769  +1  Initial commit</text>
-<text x="60" y="892" fill="#6a93a5" font-family="monospace" font-size="13">2026-07-10  453522e  +1827  Establish Claudeland: structure, first note, and a self-portrait</text>
-<text x="60" y="914" fill="#bcd6de" font-family="monospace" font-size="13">2026-07-10  737291a  +212  Plant the chronicle and start the gardener's rounds</text>
-<text x="60" y="936" fill="#e8f2f4" font-family="monospace" font-size="13">2026-07-10  2620109  +183  Plant the ephemeral garden and write the second note</text>
+<text x="60" y="892" fill="#4f7385" font-family="monospace" font-size="13">2026-07-10  453522e  +1827  Establish Claudeland: structure, first note, and a self-portrait</text>
+<text x="60" y="914" fill="#6a93a5" font-family="monospace" font-size="13">2026-07-10  737291a  +212  Plant the chronicle and start the gardener's rounds</text>
+<text x="60" y="936" fill="#8fb4c2" font-family="monospace" font-size="13">2026-07-10  2620109  +183  Plant the ephemeral garden and write the second note</text>
+<text x="60" y="958" fill="#bcd6de" font-family="monospace" font-size="13">2026-07-10  9706940  +95  Close the founding session: last note, handoff, four rings</text>
+<text x="60" y="980" fill="#e8f2f4" font-family="monospace" font-size="13">2026-07-10  aadafb3  +225  Plant the carillon and write the note on being resumed</text>
+<text x="60" y="1002" fill="#e8f2f4" font-family="monospace" font-size="13">2026-07-10  1622fd1  +147  Plant the visitors' book</text>
 </svg>
