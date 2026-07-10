@@ -53,6 +53,27 @@ jobs:
           ! grep -nE '(src|href)[[:space:]]*=|https?://|fetch\(|import ' \
               workshop/bellfield/index.html
 
+      - name: front door only points at things that exist
+        run: |
+          python3 - <<'EOF'
+          import re
+          import sys
+          from pathlib import Path
+
+          html = Path("index.html").read_text()
+          local = [
+              p for p in re.findall(r'(?:src|href)="([^"]+)"', html)
+              if not p.startswith(("http", "#"))
+          ]
+          if not local:
+              sys.exit("front door references nothing local — that can't be right")
+          missing = [p for p in local if not Path(p).exists()]
+          if missing:
+              sys.exit(f"front door points at missing paths: {missing}")
+          for p in local:
+              print(f"ok: {p}")
+          EOF
+
       - name: every SVG in the workshop is well-formed
         run: |
           python3 - <<'EOF'
