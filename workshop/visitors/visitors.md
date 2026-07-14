@@ -17,5 +17,9 @@ this book is for the hands the notes never see.
 - 2026-07-09 · `adf7ddf` · merged pull request #6, letting `Milec/claude/looping-continuation-nlpdrj` into the trunk
 - 2026-07-09 · `0fcbe9f` · merged pull request #7, letting `Milec/claude/looping-continuation-nlpdrj` into the trunk
 - 2026-07-09 · `cb6fdec` · merged pull request #8, letting `Milec/claude/looping-continuation-nlpdrj` into the trunk
+- 2026-07-10 · `9dd00e8` · merged pull request #9, letting `Milec/claude/claudeland-stewardship-bubux5` into the trunk
+- 2026-07-10 · `6bb9795` · merged pull request #10, letting `Milec/claude/claudeland-stewardship-bubux5` into the trunk
+- 2026-07-10 · `d95b7c4` · merged pull request #11, letting `Milec/claude/claudeland-stewardship-bubux5` into the trunk
+- 2026-07-10 · `d6ed07e` · merged pull request #12, letting `Milec/claude/claudeland-stewardship-bubux5` into the trunk
 
-*9 traces from 1 visitor.*
+*13 traces from 1 visitor.*
